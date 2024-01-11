@@ -71,7 +71,7 @@ const notFoundResponse = { "status": "not found" };
 for (let modelName in tables) {
     let routeName = modelName.toLowerCase();
 
-    app.put(`/update/${modelName}/:keys/:values`, async (req, res) => {
+    app.put(`/update/${routeName}/:keys/:values`, async (req, res) => {
         try {
             const keys = req.params.keys.split(',');
             const values = req.params.values.split(',');
@@ -97,7 +97,7 @@ for (let modelName in tables) {
         }
     });
     
-    app.delete(`/delete/${modelName}/:keys/:values`, async (req, res) => {
+    app.delete(`/delete/${routeName}/:keys/:values`, async (req, res) => {
         try {
             const keys = req.params.keys.split(',');
             const values = req.params.values.split(',');
@@ -157,7 +157,7 @@ for (let modelName in tables) {
         }
     });
     
-    app.post(`/insert/${modelName}`, async (req, res) => {
+    app.post(`/insert/${routeName}`, async (req, res) => {
         try {
             const newData = new tables[modelName](req.body);
             await newData.save();
