@@ -32,11 +32,11 @@ const workExperienceSchema = new mongoose.Schema({
     total_years: Number,
 });
 
-const subjectsTaughtSchema = new mongoose.Schema({
+const CourseSchema = new mongoose.Schema({
     faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
     course_title: String,
     times_taught: Number,
-    taught_at: String,
+    course_code: String,
 });
 
 const phdDetailsSchema = new mongoose.Schema({
@@ -62,7 +62,6 @@ const facultyPhDResearchStudentsSchema = new mongoose.Schema({
 });
 
 const booksSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
     book_id: { type: Number, unique: true },
     title: String,
     year: String,
@@ -74,7 +73,7 @@ const booksPublishedSchema = new mongoose.Schema({
     author_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
 });
 
-const paperPublicationsSchema = new mongoose.Schema({
+const conferencesSchema = new mongoose.Schema({
     faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
     paper_title: { type: mongoose.Schema.Types.ObjectId, ref: 'PaperPublications', primary_key: true },
     journal_conference_details: String,
@@ -142,13 +141,13 @@ const otherInformationSchema = new mongoose.Schema({
 facultySchema.plugin(uniqueValidator);
 academicPerformanceSchema.plugin(uniqueValidator);
 workExperienceSchema.plugin(uniqueValidator);
-subjectsTaughtSchema.plugin(uniqueValidator);
+CourseSchema.plugin(uniqueValidator);
 phdDetailsSchema.plugin(uniqueValidator);
 researchStudentsSchema.plugin(uniqueValidator);
 facultyPhDResearchStudentsSchema.plugin(uniqueValidator);
 booksSchema.plugin(uniqueValidator);
 booksPublishedSchema.plugin(uniqueValidator);
-paperPublicationsSchema.plugin(uniqueValidator);
+conferencesSchema.plugin(uniqueValidator);
 membershipsSchema.plugin(uniqueValidator);
 committeesSchema.plugin(uniqueValidator);
 attendedWorkshopsSchema.plugin(uniqueValidator);
@@ -161,13 +160,13 @@ otherInformationSchema.plugin(uniqueValidator);
 const Faculty = mongoose.model('Faculty', facultySchema);
 const AcademicPerformance = mongoose.model('AcademicPerformance', academicPerformanceSchema);
 const WorkExperience = mongoose.model('WorkExperience', workExperienceSchema);
-const SubjectsTaught = mongoose.model('SubjectsTaught', subjectsTaughtSchema);
+const Courses = mongoose.model('Courses', CourseSchema);
 const PhDDetails = mongoose.model('PhDDetails', phdDetailsSchema);
 const ResearchStudents = mongoose.model('ResearchStudents', researchStudentsSchema);
 const FacultyPhDResearchStudents = mongoose.model('FacultyPhDResearchStudents', facultyPhDResearchStudentsSchema);
 const Books = mongoose.model('Books', booksSchema);
 const BooksPublished = mongoose.model('BooksPublished', booksPublishedSchema);
-const PaperPublications = mongoose.model('PaperPublications', paperPublicationsSchema);
+const Conferences = mongoose.model('Conferences', conferencesSchema);
 const Memberships = mongoose.model('Memberships', membershipsSchema);
 const Committees = mongoose.model('Committees', committeesSchema);
 const AttendedWorkshops = mongoose.model('AttendedWorkshops', attendedWorkshopsSchema);
@@ -181,13 +180,13 @@ module.exports = {
     Faculty,
     AcademicPerformance,
     WorkExperience,
-    SubjectsTaught,
+    Courses,
     PhDDetails,
     ResearchStudents,
     FacultyPhDResearchStudents,
     Books,
     BooksPublished,
-    PaperPublications,
+    Conferences,
     Memberships,
     Committees,
     AttendedWorkshops,

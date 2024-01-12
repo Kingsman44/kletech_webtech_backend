@@ -1,24 +1,31 @@
-const USERNAME=""
-const PASSWORD=""
+const USERNAME="shivan0972"
+const PASSWORD="test1234"
 
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const crs = require('cors')
 
 const app = express();
+app.use(crs());
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
 const port = 3000;
 
 const {
     Faculty,
     AcademicPerformance,
     WorkExperience,
-    SubjectsTaught,
+    Courses,
     PhDDetails,
     ResearchStudents,
     FacultyPhDResearchStudents,
     Books,
     BooksPublished,
-    PaperPublications,
+    Conferences,
     Memberships,
     Committees,
     AttendedWorkshops,
@@ -47,13 +54,13 @@ const tables = {
     'Faculty': Faculty,
     'AcademicPerformance': AcademicPerformance,
     'WorkExperience': WorkExperience,
-    'SubjectsTaught': SubjectsTaught,
+    'Courses': Courses,
     'PhDDetails': PhDDetails,
     'ResearchStudents': ResearchStudents,
     'FacultyPhDResearchStudents': FacultyPhDResearchStudents,
     'Books': Books,
     'BooksPublished': BooksPublished,
-    'PaperPublications': PaperPublications,
+    'Conferences': Conferences,
     'Memberships': Memberships,
     'Committees': Committees,
     'AttendedWorkshops': AttendedWorkshops,
@@ -126,6 +133,7 @@ for (let modelName in tables) {
     app.get(`/fetch/${routeName}`, async (req, res) => {
         try {
             const allData = await tables[modelName].find({});
+            console.log(allData);
             res.json(allData);
         } catch (error) {
             const err=failureResponse;
