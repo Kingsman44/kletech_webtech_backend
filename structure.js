@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    role: { type: String, required: true },
+});
+
 const facultySchema = new mongoose.Schema({
-    id: { type: Number, unique: true, index: true },
     name: String,
-    email_id: { type: String, unique: true }, // Example of another unique field (email_id)
+    email: { type: String, unique: true },
     designation: String,
     qualification: String,
     area_of_specialization: String,
@@ -15,8 +21,7 @@ const facultySchema = new mongoose.Schema({
 });
 
 const academicPerformanceSchema = new mongoose.Schema({
-    id: { type: Number, unique: true },
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     course: String,
     board_university: String,
     year_of_passing: Number,
@@ -24,7 +29,7 @@ const academicPerformanceSchema = new mongoose.Schema({
 });
 
 const workExperienceSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     institute_name: String,
     experience_type: String,
     from_to: String,
@@ -33,7 +38,7 @@ const workExperienceSchema = new mongoose.Schema({
 });
 
 const CourseSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     course_title: String,
     times_taught: Number,
     course_code: String,
@@ -41,7 +46,7 @@ const CourseSchema = new mongoose.Schema({
 
 const phdDetailsSchema = new mongoose.Schema({
     id: { type: Number, unique: true },
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     research_centre: String,
     topic_area: String,
     registration_date: Date,
@@ -56,7 +61,7 @@ const researchStudentsSchema = new mongoose.Schema({
 });
 
 const facultyPhDResearchStudentsSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     phd_id: { type: mongoose.Schema.Types.ObjectId, ref: 'PhDDetails', primary_key: true },
     student_id: { type: mongoose.Schema.Types.ObjectId, ref: 'ResearchStudents', primary_key: true },
 });
@@ -74,7 +79,7 @@ const booksPublishedSchema = new mongoose.Schema({
 });
 
 const conferencesSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     paper_title: { type: mongoose.Schema.Types.ObjectId, ref: 'PaperPublications', primary_key: true },
     journal_conference_details: String,
     type: String,
@@ -82,13 +87,13 @@ const conferencesSchema = new mongoose.Schema({
 });
 
 const membershipsSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     organization_name: String,
     membership_type: String,
 });
 
 const committeesSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     committee_name: String,
     capacity: String,
     from: Date,
@@ -96,8 +101,7 @@ const committeesSchema = new mongoose.Schema({
 });
 
 const attendedWorkshopsSchema = new mongoose.Schema({
-    id: { type: Number, unique: true },
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty' },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     workshop_details: String,
     start_date: Date,
     end_date: Date,
@@ -106,14 +110,14 @@ const attendedWorkshopsSchema = new mongoose.Schema({
 });
 
 const conductedWorkshopsSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     workshop_details: String,
     start_date: Date,
     end_date: Date,
 });
 
 const fundedProjectsSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     project_title: String,
     funding_agency: String,
     amount: Number,
@@ -123,21 +127,22 @@ const fundedProjectsSchema = new mongoose.Schema({
 });
 
 const trainingDevelopmentSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     training_areas: String,
     duration_days: Number,
 });
 
 const interestsSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     interest_areas: String,
 });
 
 const otherInformationSchema = new mongoose.Schema({
-    faculty_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Faculty', primary_key: true },
+    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
     additional_info: String,
 });
 
+userSchema.plugin(uniqueValidator);
 facultySchema.plugin(uniqueValidator);
 academicPerformanceSchema.plugin(uniqueValidator);
 workExperienceSchema.plugin(uniqueValidator);
@@ -157,6 +162,7 @@ trainingDevelopmentSchema.plugin(uniqueValidator);
 interestsSchema.plugin(uniqueValidator);
 otherInformationSchema.plugin(uniqueValidator);
 
+const Users = mongoose.model('Users', userSchema);
 const Faculty = mongoose.model('Faculty', facultySchema);
 const AcademicPerformance = mongoose.model('AcademicPerformance', academicPerformanceSchema);
 const WorkExperience = mongoose.model('WorkExperience', workExperienceSchema);
@@ -177,6 +183,7 @@ const Interests = mongoose.model('Interests', interestsSchema);
 const OtherInformation = mongoose.model('OtherInformation', otherInformationSchema);
 
 module.exports = {
+    Users,
     Faculty,
     AcademicPerformance,
     WorkExperience,
