@@ -1,5 +1,5 @@
-const USERNAME=""
-const PASSWORD=""
+const USERNAME="shivan0972"
+const PASSWORD="test1234"
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -18,7 +18,6 @@ const port = 3000;
 const {
     Users,
     Faculty,
-    AcademicPerformance,
     WorkExperience,
     Courses,
     PhDDetails,
@@ -54,7 +53,6 @@ app.use(bodyParser.json());
 const tables = {
     'Users':Users,
     'Faculty': Faculty,
-    'AcademicPerformance': AcademicPerformance,
     'WorkExperience': WorkExperience,
     'Courses': Courses,
     'PhDDetails': PhDDetails,
@@ -84,7 +82,7 @@ for (let modelName in tables) {
         try {
             const keys = req.params.keys.split(',');
             const values = req.params.values.split(',');
-            console.log(req.body)
+            //console.log(req.body)
     
             if (keys.length !== values.length) {
                 return res.status(400).send({ "error": "Number of keys and values should match" });
@@ -95,10 +93,10 @@ for (let modelName in tables) {
                 query[key] = values[index];
             });
 
-            console.log(query);
+            //console.log(query);
     
             const updatedData = await tables[modelName].findOneAndUpdate(query, req.body);
-            console.log(updatedData)
+            //console.log(updatedData)
             if (!updatedData) {
                 return res.status(404).send(notFoundResponse);
             }
@@ -139,7 +137,7 @@ for (let modelName in tables) {
     app.get(`/fetch/${routeName}`, async (req, res) => {
         try {
             const allData = await tables[modelName].find({}, { password: 0 });
-            console.log(allData);
+            //console.log(allData);
             res.json(allData);
         } catch (error) {
             const err=failureResponse;
@@ -173,9 +171,9 @@ for (let modelName in tables) {
     
     app.post(`/insert/${routeName}`, async (req, res) => {
         try {
-            console.log(req.body)
+            //console.log(req.body)
             const newData = new tables[modelName](req.body);
-            console.log(newData)
+            //console.log(newData)
             await newData.save();
             res.send(successResponse);
         } catch (error) {

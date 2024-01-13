@@ -18,14 +18,12 @@ const facultySchema = new mongoose.Schema({
     resi_contact_no: String,
     mobile_no: String,
     dob: Date,
-});
-
-const academicPerformanceSchema = new mongoose.Schema({
-    email: { type: mongoose.Schema.Types.ObjectId, ref: 'email' },
-    course: String,
-    board_university: String,
-    year_of_passing: Number,
-    class_obtained: String,
+    AcademicPerformance: [{
+        course: String,
+        board_university: String,
+        year_of_passing: Number,
+        class_obtained: String,
+    }],
 });
 
 const workExperienceSchema = new mongoose.Schema({
@@ -144,7 +142,6 @@ const otherInformationSchema = new mongoose.Schema({
 
 userSchema.plugin(uniqueValidator);
 facultySchema.plugin(uniqueValidator);
-academicPerformanceSchema.plugin(uniqueValidator);
 workExperienceSchema.plugin(uniqueValidator);
 CourseSchema.plugin(uniqueValidator);
 phdDetailsSchema.plugin(uniqueValidator);
@@ -164,7 +161,6 @@ otherInformationSchema.plugin(uniqueValidator);
 
 const Users = mongoose.model('Users', userSchema);
 const Faculty = mongoose.model('Faculty', facultySchema);
-const AcademicPerformance = mongoose.model('AcademicPerformance', academicPerformanceSchema);
 const WorkExperience = mongoose.model('WorkExperience', workExperienceSchema);
 const Courses = mongoose.model('Courses', CourseSchema);
 const PhDDetails = mongoose.model('PhDDetails', phdDetailsSchema);
@@ -185,7 +181,6 @@ const OtherInformation = mongoose.model('OtherInformation', otherInformationSche
 module.exports = {
     Users,
     Faculty,
-    AcademicPerformance,
     WorkExperience,
     Courses,
     PhDDetails,
